@@ -1,0 +1,14 @@
+{
+	"name" : "Pivot Madness",
+	"description" : "Mess around with your Pivot Tables! Brought to you by irregular.bi",
+	"type" : "visualization",
+	"preview" : "irregular-bi.png",
+    "icon" : "table",
+	"version" : "1.0.0",
+	"author" : "Ralf Becher, irregular.bi",
+	"repository" : "",
+	"homepage": "http://irregular.bi",
+	"keywords": "qlik-sense, visualization, pivot",
+	"license": "2017 © irregular.bi - MIT license",    
+    "dependencies" : { "qlik-sense" : ">=3.1.x" }
+}
