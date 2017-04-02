@@ -782,7 +782,7 @@ define(["jquery", "qlik", "text!./template.ng.html"],
 
                 // suppress hover menu
                 if ($('#pivotHelper-fullScreen').length == 0) {
-                    $('<style type="text/css" id="pivotHelper-fullScreen">.qv-object-bi-irregular-pivothelper .qv-object-nav a {display: none;}</style>').appendTo("head");
+                    $('<style type="text/css" id="pivotHelper-fullScreen">.qv-object-bi-irregular-pivot-madness .qv-object-nav a {display: none;}</style>').appendTo("head");
                 }
 
 }]
