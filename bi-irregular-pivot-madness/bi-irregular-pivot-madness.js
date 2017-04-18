@@ -382,7 +382,13 @@ define(["jquery", "qlik", "text!./template.ng.html"],
             template: ngTemplate,
             controller: ["$scope", "$document", "$element", function (scope, document, element) {
 
-                scope.enigmaModel = scope.component.model.enigmaModel.app;
+                if (scope.component.model.hasOwnProperty("enigmaModel")) {
+                    // Enigma until 3.2.2
+                    scope.enigmaModel = scope.component.model.enigmaModel.app;    
+                } else {
+                    // Enigma from 3.2.3
+                    scope.enigmaModel = scope.component.model.app;    
+                }
                 scope.vm = {};
                 scope.vm.sheetId = qlik.navigation.getCurrentSheetId().sheetId;
                 scope.vm.sheetObjects = [];
