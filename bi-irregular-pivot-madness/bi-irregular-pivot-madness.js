@@ -114,6 +114,24 @@ define(["jquery", "qlik", "text!./template.ng.html"],
                                             translation: "properties.off"
                                         }
                                     },
+                                    expandTopButtonAll: {
+                                        type: "boolean",
+                                        component: "switch",
+                                        label: "Expand All Levels",
+                                        ref: "expandTopButtonAll",
+                                        show: function (layout) {
+                                            return layout.expandTopButton;
+                                        },
+                                        defaultValue: true,
+                                        trueOption: {
+                                            value: true,
+                                            translation: "properties.on"
+                                        },
+                                        falseOption: {
+                                            value: false,
+                                            translation: "properties.off"
+                                        }
+                                    },
                                     collapseTopButton: {
                                         type: "boolean",
                                         component: "switch",
@@ -221,6 +239,24 @@ define(["jquery", "qlik", "text!./template.ng.html"],
                                         component: "switch",
                                         label: "Show Expand Button",
                                         ref: "expandLeftButton",
+                                        defaultValue: true,
+                                        trueOption: {
+                                            value: true,
+                                            translation: "properties.on"
+                                        },
+                                        falseOption: {
+                                            value: false,
+                                            translation: "properties.off"
+                                        }
+                                    },
+                                    expandLeftButtonAll: {
+                                        type: "boolean",
+                                        component: "switch",
+                                        label: "Expand All Levels",
+                                        ref: "expandLeftButtonAll",
+                                        show: function (layout) {
+                                            return layout.expandLeftButton;
+                                        },
                                         defaultValue: true,
                                         trueOption: {
                                             value: true,
@@ -401,8 +437,9 @@ define(["jquery", "qlik", "text!./template.ng.html"],
                     if (!isEditMode())
                         patchPivot({
                             "level": "top",
-                            "action": "expand"
-                        });
+                            "action": "expand",
+                             "allLevels": scope.layout.expandTopButtonAll
+                       });
                 }
                 scope.vm.collapseTopAll = function () {
                     if (!isEditMode())
@@ -415,7 +452,8 @@ define(["jquery", "qlik", "text!./template.ng.html"],
                     if (!isEditMode())
                         patchPivot({
                             "level": "left",
-                            "action": "expand"
+                            "action": "expand",
+                            "allLevels": scope.layout.expandLeftButtonAll
                         });
                 }
                 scope.vm.collapseLeftAll = function () {
@@ -507,7 +545,7 @@ define(["jquery", "qlik", "text!./template.ng.html"],
                                     scope.vm.sheetObjects.push(sheetObjectsTmp[pivotHelper - 1]);
                                 }
                             }
-                            console.log("scope.vm.sheetObjects", scope.vm.sheetObjects);
+                            //console.log("scope.vm.sheetObjects", scope.vm.sheetObjects);
                         });
 
                     });
@@ -520,7 +558,7 @@ define(["jquery", "qlik", "text!./template.ng.html"],
 
                     function setLayoutOption(tid) {
                         var selector = tid.length > 0 ? "div[tid='" + tid + "'] " : "";
-                        console.log(tid, selector);
+                        //console.log(tid, selector);
 
                         if (scope.vm.hideTopDims) {
                             $(selector + '.top-meta-headers .qv-pt-meta-button').css('display', 'none');
@@ -570,6 +608,7 @@ define(["jquery", "qlik", "text!./template.ng.html"],
                 }
 
                 function patchPivot(patchMode) {
+                    //console.log("patchMode",patchMode);
                     scope.enigmaModel.getObject(scope.vm.sheetId).then(function (sheetObj) {
                         sheetObj.getProperties().then(function (sheetProp) {
                             var proms = scope.vm.sheetObjects.map(function (obj, i) {
@@ -646,7 +685,7 @@ define(["jquery", "qlik", "text!./template.ng.html"],
                                             } else {
                                                 if (patchMode.level === "top") {
                                                     if (patchMode.action === "expand") {
-                                                        return obj.expandTop("/qHyperCubeDef", 0, 0, true);
+                                                        return obj.expandTop("/qHyperCubeDef", 0, 0, patchMode.allLevels);
                                                     } else if (patchMode.action === "collapse") {
                                                         return obj.collapseTop("/qHyperCubeDef", 0, 0, true);
                                                     } else if (patchMode.action === "rotateLeft") {
@@ -675,7 +714,7 @@ define(["jquery", "qlik", "text!./template.ng.html"],
                                                     }
                                                 } else { // left
                                                     if (patchMode.action === "expand") {
-                                                        return obj.expandLeft("/qHyperCubeDef", 0, 0, true);
+                                                        return obj.expandLeft("/qHyperCubeDef", 0, 0, patchMode.allLevels);
                                                     } else if (patchMode.action === "collapse") {
                                                         return obj.collapseLeft("/qHyperCubeDef", 0, 0, true);
                                                     } else if (patchMode.action === "rotateLeft") {
@@ -723,7 +762,7 @@ define(["jquery", "qlik", "text!./template.ng.html"],
                                     });
                                 });
                                 Promise.all(proms2).then(function (props) {
-                                    console.log("all patched", props);
+                                    //console.log("all patched", props);
                                     if (patchMode.transpose) {
                                         setTimeout(function() { layoutOptions() }, 100);
                                     }
@@ -762,7 +801,7 @@ define(["jquery", "qlik", "text!./template.ng.html"],
                 }
 
                 // initial calls
-                console.log("initial calls");
+                //console.log("initial calls");
                 setModel();
                 getSheetObjects().then(function () {
                     layoutOptions();
@@ -770,7 +809,7 @@ define(["jquery", "qlik", "text!./template.ng.html"],
 
                 // bind model, re-render when model changes
                 scope.component.model.Validated.bind(function () {
-                    console.log("validated calls");
+                    //console.log("validated calls");
                     setModel();
                     getSheetObjects().then(function () {
                         layoutOptions();
@@ -779,7 +818,7 @@ define(["jquery", "qlik", "text!./template.ng.html"],
 
                 scope.$watch(isEditMode, function (newValue, oldValue) {
                     if (oldValue === true && newValue === false) {
-                        console.log("watch calls");
+                        //console.log("watch calls");
                         getSheetObjects().then(function () {
                             layoutOptions();
                         });

@@ -15,12 +15,13 @@ It provides all kinds of settings to switch things by button or to hide things b
 #### Top Dims
 
 1. Hide (F5): hide dim buttons
-2. Disable Interaction (F5): disable interactions on dim buttons
-3. Disable Selection (F5): disable selection popup on dims
-4. Show Expand Button: expand all
-5. Show Collapse Button: collapse all
-6. Show Rotate to left Button: rotate dims to left
-7. Show Rotate to right Button: rotate dims to right
+1. Disable Interaction (F5): disable interactions on dim buttons
+1. Disable Selection (F5): disable selection popup on dims
+1. Show Expand Button: expand all
+1. Expand All Levels: expand all levels, or first level only
+1. Show Collapse Button: collapse all
+1. Show Rotate to left Button: rotate dims to left
+1. Show Rotate to right Button: rotate dims to right
 
 #### Left Dims
 
